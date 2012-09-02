@@ -11,6 +11,27 @@ module Envmod
 
     private
 
+    def process
+      begin
+        prepare_environment_for_block
+        run_block
+      ensure
+        cache_environment_after_block
+        delete_keys_that_do_not_belong
+        revert_changed_keys
+      end
+    end
+
+    def prepare_environment_for_block
+      @original_env = clone_env
+      copy_overrides_to_environment
+      @env_with_overrides_before_block = clone_env
+    end
+
+    def run_block
+      @block.call
+    end
+
     def copy_overrides_to_environment
       @environment_overrides.each do |key, value|
         ENV[key] = value
@@ -21,36 +42,45 @@ module Envmod
       @environment_overrides.keys
     end
 
-    def process
-      begin
-        original_env = ENV.to_hash
+    def keys_changed_by_block
+      @keys_changed_by_block ||= OverlappingKeysWithChangedValues.new(@env_with_overrides_before_block, @env_after_block).keys
+    end
 
-        copy_overrides_to_environment
+    def cache_environment_after_block
+      @env_after_block = clone_env
+    end
 
-        env_before_block = ENV.to_hash
-        @block.call
-      ensure
-        env_after_block = ENV.to_hash
-        k2 = diff_hashes(env_before_block, env_after_block).keys
-        (keys_to_remove - k2).each {|key| ENV.delete(key) }
+    def delete_keys_that_do_not_belong
+      (keys_to_remove - keys_changed_by_block).each {|key| ENV.delete(key) }
+    end
 
-        original_env.each do |key, value|
-          ENV[key] = value
-        end
+    def revert_changed_keys
+      (@original_env.keys - keys_changed_by_block).each do |key|
+        ENV[key] = @original_env[key]
       end
     end
 
-    def diff_hashes(hash_1, hash_2)
-      keys_overlap = hash_1.keys & hash_2.keys
-      diff_hash = {}
+    def clone_env
+      ENV.to_hash
+    end
 
-      hash_2.each do |key, value|
-        if hash_1[key] != value
-          diff_hash[key] = value
+    class OverlappingKeysWithChangedValues
+      def initialize(hash_1, hash_2)
+        @hash_1 = hash_1
+        @hash_2 = hash_2
+      end
+
+      def keys
+        overlapping_keys.select do |overlapping_key|
+          @hash_1[overlapping_key] != @hash_2[overlapping_key]
         end
       end
 
-      diff_hash
+      private
+
+      def overlapping_keys
+        @hash_2.keys & @hash_1.keys
+      end
     end
   end
 end
