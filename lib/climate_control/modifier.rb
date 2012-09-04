@@ -23,9 +23,9 @@ module ClimateControl
     end
 
     def prepare_environment_for_block
-      @original_env = clone_env
+      @original_env = clone_environment
       copy_overrides_to_environment
-      @env_with_overrides_before_block = clone_env
+      @env_with_overrides_before_block = clone_environment
     end
 
     def run_block
@@ -47,7 +47,7 @@ module ClimateControl
     end
 
     def cache_environment_after_block
-      @env_after_block = clone_env
+      @env_after_block = clone_environment
     end
 
     def delete_keys_that_do_not_belong
@@ -60,7 +60,7 @@ module ClimateControl
       end
     end
 
-    def clone_env
+    def clone_environment
       ENV.to_hash
     end
 
