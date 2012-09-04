@@ -1,6 +1,6 @@
 require 'active_support/core_ext/hash/keys'
 
-module Envmod
+module ClimateControl
   class Modifier
     def initialize(environment_overrides = {}, &block)
       @environment_overrides = environment_overrides.dup.stringify_keys!

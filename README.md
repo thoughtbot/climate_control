@@ -1,4 +1,4 @@
-# Envmod
+# Climate Control
 
 TODO: Write a gem description
 
@@ -6,7 +6,7 @@ TODO: Write a gem description
 
 Add this line to your application's Gemfile:
 
-    gem 'envmod'
+    gem 'climate_control'
 
 And then execute:
 
@@ -14,7 +14,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install envmod
+    $ gem install climate_control
 
 ## Usage
 

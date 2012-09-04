@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Envmod::Modifier do
+describe ClimateControl::Modifier do
   it 'modifies the environment' do
     with_modified_env VARIABLE_1: 'bar', VARIABLE_2: 'qux' do
       expect(ENV['VARIABLE_1']).to eq('bar')
@@ -59,7 +59,7 @@ describe Envmod::Modifier do
   end
 
   def with_modified_env(options, &block)
-    Envmod::Modifier.new(options, &block)
+    ClimateControl::Modifier.new(options, &block)
   end
 
   around do |example|

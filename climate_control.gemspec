@@ -1,15 +1,15 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'envmod/version'
+require 'climate_control/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = 'envmod'
-  gem.version       = Envmod::VERSION
+  gem.name          = 'climate_control'
+  gem.version       = ClimateControl::VERSION
   gem.authors       = ['Joshua Clayton']
   gem.email         = ['joshua.clayton@gmail.com']
   gem.description   = %q{Modify your ENV}
-  gem.summary       = %q{Modify your ENV easily with Envmod}
+  gem.summary       = %q{Modify your ENV easily with ClimateControl}
   gem.homepage      = ''
 
   gem.files         = `git ls-files`.split($/)
