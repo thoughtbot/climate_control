@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ['joshua.clayton@gmail.com']
   gem.description   = %q{Modify your ENV}
   gem.summary       = %q{Modify your ENV easily with ClimateControl}
-  gem.homepage      = ''
+  gem.homepage      = 'https://github.com/thoughtbot/climate_control'
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
