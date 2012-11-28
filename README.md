@@ -83,3 +83,7 @@ the tests for more detail about the specific behaviors.
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## License
+
+climate_control is copyright 2012 Joshua Clayton and thoughtbot, inc. It is free software and may be redistributed under the terms specified in the LICENSE.txt file.

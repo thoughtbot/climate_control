@@ -3,8 +3,8 @@ require 'spec_helper'
 describe ClimateControl::Modifier do
   it 'modifies the environment' do
     with_modified_env VARIABLE_1: 'bar', VARIABLE_2: 'qux' do
-      expect(ENV['VARIABLE_1']).to eq('bar')
-      expect(ENV['VARIABLE_2']).to eq('qux')
+      expect(ENV['VARIABLE_1']).to eq 'bar'
+      expect(ENV['VARIABLE_2']).to eq 'qux'
     end
 
     expect(ENV['VARIABLE_1']).to be_nil
@@ -16,18 +16,18 @@ describe ClimateControl::Modifier do
       ENV['ASSIGNED_IN_BLOCK'] = 'assigned'
     end
 
-    expect(ENV['ASSIGNED_IN_BLOCK']).to eq('assigned')
+    expect(ENV['ASSIGNED_IN_BLOCK']).to eq 'assigned'
   end
 
   it 'reassigns previously set environment variables' do
     ENV['VARIABLE_ASSIGNED_BEFORE_MODIFYING_ENV'] = 'original'
-    expect(ENV['VARIABLE_ASSIGNED_BEFORE_MODIFYING_ENV']).to eq('original')
+    expect(ENV['VARIABLE_ASSIGNED_BEFORE_MODIFYING_ENV']).to eq 'original'
 
     with_modified_env VARIABLE_ASSIGNED_BEFORE_MODIFYING_ENV: 'overridden' do
-      expect(ENV['VARIABLE_ASSIGNED_BEFORE_MODIFYING_ENV']).to eq('overridden')
+      expect(ENV['VARIABLE_ASSIGNED_BEFORE_MODIFYING_ENV']).to eq 'overridden'
     end
 
-    expect(ENV['VARIABLE_ASSIGNED_BEFORE_MODIFYING_ENV']).to eq('original')
+    expect(ENV['VARIABLE_ASSIGNED_BEFORE_MODIFYING_ENV']).to eq 'original'
   end
 
   it 'persists the change when overriding the variable in the block' do
@@ -35,7 +35,7 @@ describe ClimateControl::Modifier do
       ENV['VARIABLE_MODIFIED_AND_THEN_ASSIGNED'] = 'assigned value'
     end
 
-    expect(ENV['VARIABLE_MODIFIED_AND_THEN_ASSIGNED']).to eq('assigned value')
+    expect(ENV['VARIABLE_MODIFIED_AND_THEN_ASSIGNED']).to eq 'assigned value'
   end
 
   it 'resets environment variables even if the block raises' do
@@ -55,7 +55,7 @@ describe ClimateControl::Modifier do
       ENV['CHANGED'] = 'new value'
     end
 
-    expect(ENV['CHANGED']).to eq('new value')
+    expect(ENV['CHANGED']).to eq 'new value'
   end
 
   def with_modified_env(options, &block)
