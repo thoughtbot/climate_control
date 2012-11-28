@@ -19,4 +19,6 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'activesupport', '>= 3.0'
   gem.add_development_dependency 'rspec', '~> 2.11'
+  gem.add_development_dependency 'rake', '~> 0.9.2'
+  gem.add_development_dependency 'simplecov', '~> 0.7.1'
 end
