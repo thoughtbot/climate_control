@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ClimateControl::Modifier do
   it 'modifies the environment' do
-    with_modified_env VARIABLE_1: 'bar', VARIABLE_2: 'qux' do
+    with_modified_env :VARIABLE_1 => 'bar', :VARIABLE_2 => 'qux' do
       expect(ENV['VARIABLE_1']).to eq 'bar'
       expect(ENV['VARIABLE_2']).to eq 'qux'
     end
@@ -12,7 +12,7 @@ describe ClimateControl::Modifier do
   end
 
   it 'allows for environment variables to be assigned within the block' do
-    with_modified_env VARIABLE_1: 'modified' do
+    with_modified_env :VARIABLE_1 => 'modified' do
       ENV['ASSIGNED_IN_BLOCK'] = 'assigned'
     end
 
@@ -23,7 +23,7 @@ describe ClimateControl::Modifier do
     ENV['VARIABLE_ASSIGNED_BEFORE_MODIFYING_ENV'] = 'original'
     expect(ENV['VARIABLE_ASSIGNED_BEFORE_MODIFYING_ENV']).to eq 'original'
 
-    with_modified_env VARIABLE_ASSIGNED_BEFORE_MODIFYING_ENV: 'overridden' do
+    with_modified_env :VARIABLE_ASSIGNED_BEFORE_MODIFYING_ENV => 'overridden' do
       expect(ENV['VARIABLE_ASSIGNED_BEFORE_MODIFYING_ENV']).to eq 'overridden'
     end
 
@@ -31,7 +31,7 @@ describe ClimateControl::Modifier do
   end
 
   it 'persists the change when overriding the variable in the block' do
-    with_modified_env VARIABLE_MODIFIED_AND_THEN_ASSIGNED: 'modified' do
+    with_modified_env :VARIABLE_MODIFIED_AND_THEN_ASSIGNED => 'modified' do
       ENV['VARIABLE_MODIFIED_AND_THEN_ASSIGNED'] = 'assigned value'
     end
 
@@ -40,7 +40,7 @@ describe ClimateControl::Modifier do
 
   it 'resets environment variables even if the block raises' do
     expect {
-      with_modified_env FOO: 'bar' do
+      with_modified_env :FOO => 'bar' do
         raise 'broken'
       end
     }.to raise_error
@@ -51,7 +51,7 @@ describe ClimateControl::Modifier do
   it 'preserves environment variables set within the block' do
     ENV['CHANGED'] = 'old value'
 
-    with_modified_env IRRELEVANT: 'ignored value' do
+    with_modified_env :IRRELEVANT => 'ignored value' do
       ENV['CHANGED'] = 'new value'
     end
 
@@ -59,7 +59,7 @@ describe ClimateControl::Modifier do
   end
 
   it 'returns the value of the block' do
-    value = with_modified_env VARIABLE_1: 'bar' do
+    value = with_modified_env :VARIABLE_1 => 'bar' do
       'value inside block'
     end
 
