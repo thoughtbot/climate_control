@@ -58,8 +58,16 @@ describe ClimateControl::Modifier do
     expect(ENV['CHANGED']).to eq 'new value'
   end
 
+  it 'returns the value of the block' do
+    value = with_modified_env VARIABLE_1: 'bar' do
+      'value inside block'
+    end
+
+    expect(value).to eq 'value inside block'
+  end
+
   def with_modified_env(options, &block)
-    ClimateControl::Modifier.new(options, &block)
+    ClimateControl::Modifier.new(options, &block).process
   end
 
   around do |example|

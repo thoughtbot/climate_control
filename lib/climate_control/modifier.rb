@@ -5,11 +5,7 @@ module ClimateControl
     def initialize(environment_overrides = {}, &block)
       @environment_overrides = environment_overrides.dup.stringify_keys!
       @block = block
-
-      process
     end
-
-    private
 
     def process
       begin
@@ -21,6 +17,8 @@ module ClimateControl
         revert_changed_keys
       end
     end
+
+    private
 
     def prepare_environment_for_block
       @original_env = clone_environment
