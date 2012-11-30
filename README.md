@@ -22,7 +22,7 @@ Or install it yourself as:
 within a block:
 
 ```ruby
-ClimateControl::Modifier.new CONFIRMATION_INSTRUCTIONS_BCC: 'confirmation_bcc@example.com' do
+ClimateControl.modify CONFIRMATION_INSTRUCTIONS_BCC: 'confirmation_bcc@example.com' do
   sign_up_as 'john@example.com'
   confirm_account_for_email 'john@example.com'
   current_email.should bcc_to('confirmation_bcc@example.com')
@@ -33,7 +33,7 @@ To use with RSpec, you could define this in your spec:
 
 ```ruby
 def with_modified_env(options, &block)
-  ClimateControl::Modifier.new(options, &block)
+  ClimateControl.modify(options, &block)
 end
 ```
 
@@ -50,7 +50,7 @@ describe Thing, 'name' do
   end
 
   def with_modified_env(options, &block)
-    ClimateControl::Modifier.new(options, &block)
+    ClimateControl.modify(options, &block)
   end
 end
 ```
@@ -63,7 +63,7 @@ describe Thing, 'name' do
   # ... tests
 
   around do |example|
-    ClimateControl::Modifier.new FOO: 'bar' do
+    ClimateControl.modify FOO: 'bar' do
       example.run
     end
   end
