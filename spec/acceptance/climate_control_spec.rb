@@ -77,8 +77,42 @@ describe "Climate control" do
     expect(value).to eq "value inside block"
   end
 
+  it "handles threads correctly" do
+    # failure path without mutex
+    # [thread_removing_env] BAZ is assigned
+    # 0.25s passes
+    # [other_thread] FOO is assigned and ENV is copied (which includes BAZ)
+    # 0.25s passes
+    # [thread_removing_env] thread resolves and BAZ is removed from env; other_thread still retains knowledge of BAZ
+    # 0.25s passes
+    # [other_thread] thread resolves, FOO is removed, BAZ is copied back to ENV
+
+    thread_removing_env = Thread.new do
+      with_modified_env BAZ: "buzz" do
+        sleep 0.5
+      end
+
+      expect(ENV["BAZ"]).to be_nil
+    end
+
+    other_thread = Thread.new do
+      sleep 0.25
+      with_modified_env FOO: "bar" do
+        sleep 0.5
+      end
+
+      expect(ENV["FOO"]).to be_nil
+    end
+
+    thread_removing_env.join
+    other_thread.join
+
+    expect(ENV["FOO"]).to be_nil
+    expect(ENV["BAZ"]).to be_nil
+  end
+
   def with_modified_env(options, &block)
-    ClimateControl::Modifier.new(options, &block).process
+    ClimateControl.modify(options, &block)
   end
 
   around do |example|

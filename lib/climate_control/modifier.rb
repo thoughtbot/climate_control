@@ -2,19 +2,22 @@ require "active_support/core_ext/hash/keys"
 
 module ClimateControl
   class Modifier
-    def initialize(environment_overrides = {}, &block)
+    def initialize(env, environment_overrides = {}, &block)
       @environment_overrides = environment_overrides.dup.stringify_keys!
       @block = block
+      @env = env
     end
 
     def process
-      begin
-        prepare_environment_for_block
-        run_block
-      ensure
-        cache_environment_after_block
-        delete_keys_that_do_not_belong
-        revert_changed_keys
+      @env.synchronize do
+        begin
+          prepare_environment_for_block
+          run_block
+        ensure
+          cache_environment_after_block
+          delete_keys_that_do_not_belong
+          revert_changed_keys
+        end
       end
     end
 
@@ -32,7 +35,7 @@ module ClimateControl
 
     def copy_overrides_to_environment
       @environment_overrides.each do |key, value|
-        ENV[key] = value
+        @env[key] = value
       end
     end
 
@@ -49,17 +52,17 @@ module ClimateControl
     end
 
     def delete_keys_that_do_not_belong
-      (keys_to_remove - keys_changed_by_block).each {|key| ENV.delete(key) }
+      (keys_to_remove - keys_changed_by_block).each {|key| @env.delete(key) }
     end
 
     def revert_changed_keys
       (@original_env.keys - keys_changed_by_block).each do |key|
-        ENV[key] = @original_env[key]
+        @env[key] = @original_env[key]
       end
     end
 
     def clone_environment
-      ENV.to_hash
+      @env.to_hash
     end
 
     class OverlappingKeysWithChangedValues
