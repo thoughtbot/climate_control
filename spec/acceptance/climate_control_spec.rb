@@ -9,7 +9,7 @@ describe "Climate control" do
     end
 
     expect(ENV["FOO"]).to be_nil
-    expect(block_run).to be_true
+    expect(block_run).to be true
   end
 
   it "modifies the environment" do
