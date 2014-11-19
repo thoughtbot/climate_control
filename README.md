@@ -99,4 +99,4 @@ block, ensuring values are managed properly and consistently.
 
 ## License
 
-climate_control is copyright 2012-2013 Joshua Clayton and thoughtbot, inc. It is free software and may be redistributed under the terms specified in the LICENSE.txt file.
+climate_control is copyright 2012-2014 Joshua Clayton and thoughtbot, inc. It is free software and may be redistributed under the terms specified in the LICENSE.txt file.
