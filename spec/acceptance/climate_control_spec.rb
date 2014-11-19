@@ -111,6 +111,17 @@ describe "Climate control" do
     expect(ENV["BAZ"]).to be_nil
   end
 
+  it "raises when the value cannot be assigned properly" do
+    expect do
+      with_modified_env(FOO: 123)
+    end.to raise_error ClimateControl::UnassignableValueError, "attempted to assign 123 to FOO but failed (no implicit conversion of Fixnum into String)"
+
+    expect do
+      Thing = Class.new
+      with_modified_env(FOO: Thing.new)
+    end.to raise_error ClimateControl::UnassignableValueError, /attempted to assign .*Thing.* to FOO but failed \(no implicit conversion of.*\)$/
+  end
+
   def with_modified_env(options, &block)
     ClimateControl.modify(options, &block)
   end

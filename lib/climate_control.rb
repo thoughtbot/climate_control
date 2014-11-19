@@ -1,4 +1,5 @@
 require "climate_control/environment"
+require "climate_control/errors"
 require "climate_control/modifier"
 require "climate_control/version"
 

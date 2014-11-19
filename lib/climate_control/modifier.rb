@@ -35,7 +35,12 @@ module ClimateControl
 
     def copy_overrides_to_environment
       @environment_overrides.each do |key, value|
-        @env[key] = value
+        begin
+          @env[key] = value
+        rescue TypeError => e
+          raise UnassignableValueError,
+            "attempted to assign #{value} to #{key} but failed (#{e.message})"
+        end
       end
     end
 
@@ -67,7 +72,7 @@ module ClimateControl
 
     class OverlappingKeysWithChangedValues
       def initialize(hash_1, hash_2)
-        @hash_1 = hash_1
+        @hash_1 = hash_1 || {}
         @hash_2 = hash_2
       end
 
