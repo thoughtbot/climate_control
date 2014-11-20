@@ -112,18 +112,28 @@ describe "Climate control" do
   end
 
   it "raises when the value cannot be assigned properly" do
-    expect do
-      with_modified_env(FOO: 123)
-    end.to raise_error ClimateControl::UnassignableValueError, "attempted to assign 123 to FOO but failed (no implicit conversion of Fixnum into String)"
+    Thing = Class.new
+    message = generate_type_error_for_object(Thing.new)
 
     expect do
-      Thing = Class.new
       with_modified_env(FOO: Thing.new)
-    end.to raise_error ClimateControl::UnassignableValueError, /attempted to assign .*Thing.* to FOO but failed \(no implicit conversion of.*\)$/
+    end.to raise_error ClimateControl::UnassignableValueError, /attempted to assign .*Thing.* to FOO but failed \(#{message}\)$/
   end
 
   def with_modified_env(options, &block)
     ClimateControl.modify(options, &block)
+  end
+
+  def generate_type_error_for_object(object)
+    message = nil
+
+    begin
+      "1" + object
+    rescue TypeError => e
+      message = e.message
+    end
+
+    message
   end
 
   around do |example|
