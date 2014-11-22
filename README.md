@@ -76,6 +76,24 @@ block, except for the overrides. Transparency is crucial because the code
 executed within the block is not for `ClimateControl` to manage or modify. See
 the tests for more detail about the specific behaviors.
 
+## Thread safety
+
+Climate Control is inherently thread-unsafe since it modifies the content of the
+global `ENV` variable. This means that this gem should be avoided in a
+multi-threaded environment.
+
+Internally, this gem mitigates the thread-safety issue by locking a mutex while
+modifying `ENV`. This means that calls to `ClimateControl.modify` in different
+threads will not conflict with one another. However, these calls will conflict
+with any other code in your application that reads to or writes from `ENV`. This
+means that this gem could be considered thread-safe if and only if no thread in
+your app reads to or writes from `ENV` while `ClimateControl.modify` is
+executing.
+
+A caveat of the mutex locking is that only one call to `ClimateControl.modify`
+can be run concurrently. This could become a concurrency bottleneck in your
+application.
+
 ## Why Use Climate Control?
 
 By following guidelines regarding environment variables outlined by the
