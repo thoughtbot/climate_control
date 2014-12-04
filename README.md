@@ -29,44 +29,29 @@ ClimateControl.modify CONFIRMATION_INSTRUCTIONS_BCC: 'confirmation_bcc@example.c
 end
 ```
 
-To use with RSpec, you could define this in your spec:
+## RSpec metadata
+
+ClimateControl provides easy integration with RSpec using metadata. To set this
+up, call `ClimateControl.configure_rspec_metadata!`, you can add this to your `spec_helper.rb`.
+
+Once you've done that, you can have an example group or example use
+ClimateControl by passing `:climate_control` as an additional argument after the description
+string as key of a hash of configuration like.
 
 ```ruby
-def with_modified_env(options, &block)
-  ClimateControl.modify(options, &block)
+it 'have the correct current_email', climate_control: { CONFIRMATION_INSTRUCTIONS_BCC: 'confirmation_bcc@example.com' } do
+  sign_up_as 'john@example.com'
+  confirm_account_for_email 'john@example.com'
+  current_email.should bcc_to('confirmation_bcc@example.com')
 end
 ```
 
-This would allow for more straightforward way to modify the environment:
+To modify the environment for an entire set of tests in RSpec, you can use this on a `describe`:
 
 ```ruby
-require 'spec_helper'
-
-describe Thing, 'name' do
-  it 'appends ADDITIONAL_NAME' do
-    with_modified_env ADDITIONAL_NAME: 'bar' do
-      expect(Thing.new.name).to eq('John Doe Bar')
-    end
-  end
-
-  def with_modified_env(options, &block)
-    ClimateControl.modify(options, &block)
-  end
-end
-```
-
-To modify the environment for an entire set of tests in RSpec, use an `around`
-block:
-
-```ruby
-describe Thing, 'name' do
+describe Thing, 'name', climate_control: { CONFIRMATION_INSTRUCTIONS_BCC: 'confirmation_bcc@example.com' } do
   # ... tests
 
-  around do |example|
-    ClimateControl.modify FOO: 'bar' do
-      example.run
-    end
-  end
 end
 ```
 
