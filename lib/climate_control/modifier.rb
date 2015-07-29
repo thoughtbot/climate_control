@@ -33,10 +33,24 @@ module ClimateControl
       @block.call
     end
 
+    def stringify_boolean(value)
+      return value.to_s if [true, false].include?(value)
+      value
+    end
+
+    def stringify_number(value)
+      return value.to_s if value.is_a?(Numeric)
+      value
+    end
+
+    def stringify_value(value)
+      stringify_number(stringify_boolean(value))
+    end
+
     def copy_overrides_to_environment
       @environment_overrides.each do |key, value|
         begin
-          @env[key] = value
+          @env[key] = stringify_value(value)
         rescue TypeError => e
           raise UnassignableValueError,
             "attempted to assign #{value} to #{key} but failed (#{e.message})"
