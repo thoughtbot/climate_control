@@ -1,18 +1,18 @@
 require "thread"
-require "active_support/core_ext/module/delegation"
+require "forwardable"
 
 module ClimateControl
   class Environment
+    extend Forwardable
+
     def initialize
       @semaphore = Mutex.new
     end
 
-    delegate :[]=, :to_hash, :[], :delete, to: :env
-    delegate :synchronize, to: :semaphore
+    def_delegators :env, :[]=, :to_hash, :[], :delete
+    def_delegator :@semaphore, :synchronize
 
     private
-
-    attr_reader :semaphore
 
     def env
       ENV
