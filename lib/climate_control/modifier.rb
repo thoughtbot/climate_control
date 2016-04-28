@@ -1,9 +1,7 @@
-require "active_support/core_ext/hash/keys"
-
 module ClimateControl
   class Modifier
     def initialize(env, environment_overrides = {}, &block)
-      @environment_overrides = environment_overrides.dup.stringify_keys!
+      @environment_overrides = stringify_keys(environment_overrides)
       @block = block
       @env = env
     end
@@ -68,6 +66,12 @@ module ClimateControl
 
     def clone_environment
       @env.to_hash
+    end
+
+    def stringify_keys(env)
+      env.each_with_object({}) do |(key, value), hash|
+        hash[key.to_s] = value
+      end
     end
 
     class OverlappingKeysWithChangedValues
