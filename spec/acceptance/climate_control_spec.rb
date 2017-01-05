@@ -54,7 +54,7 @@ describe "Climate control" do
       with_modified_env FOO: "bar" do
         raise "broken"
       end
-    }.to raise_error
+    }.to raise_error("broken")
 
     expect(ENV["FOO"]).to be_nil
   end
