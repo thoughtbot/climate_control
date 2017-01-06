@@ -1,2 +1,7 @@
+0.0.4 (January 6, 2017)
+  Improved thread safety
+  Handle TypeErrors during assignment
+  Improve documentation
+
 0.0.1 (November 28, 2012)
   Initial release
