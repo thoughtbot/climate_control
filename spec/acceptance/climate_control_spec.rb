@@ -111,6 +111,19 @@ describe "Climate control" do
     expect(ENV["BAZ"]).to be_nil
   end
 
+  it "is re-entrant" do
+    ret = with_modified_env(FOO: "foo") do
+      with_modified_env(BAR: "bar") do
+        "bar"
+      end
+    end
+
+    expect(ret).to eq("bar")
+
+    expect(ENV["FOO"]).to be_nil
+    expect(ENV["BAR"]).to be_nil
+  end
+
   it "raises when the value cannot be assigned properly" do
     Thing = Class.new
     message = generate_type_error_for_object(Thing.new)
