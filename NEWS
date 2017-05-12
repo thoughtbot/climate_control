@@ -1,3 +1,6 @@
+0.2.0 (May 12, 2017)
+  Allow nested environment changes in the same thread
+
 0.1.0 (January 7, 2017)
   Remove ActiveSupport dependency
 
