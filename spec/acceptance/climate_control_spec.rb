@@ -22,6 +22,13 @@ describe "Climate control" do
     expect(ENV["VARIABLE_2"]).to be_nil
   end
 
+  it "converts booleans and numbers to strings" do
+    with_modified_env VARIABLE_1: true, VARIABLE_2: 1 do
+      expect(ENV["VARIABLE_1"]).to eq "true"
+      expect(ENV["VARIABLE_2"]).to eq "1"
+    end
+  end
+
   it "allows for environment variables to be assigned within the block" do
     with_modified_env VARIABLE_1: "modified" do
       ENV["ASSIGNED_IN_BLOCK"] = "assigned"
