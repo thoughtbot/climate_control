@@ -29,6 +29,18 @@ ClimateControl.modify CONFIRMATION_INSTRUCTIONS_BCC: 'confirmation_bcc@example.c
 end
 ```
 
+To modify multiple environment variables:
+
+```ruby
+ClimateControl.modify CONFIRMATION_INSTRUCTIONS_BCC: 'confirmation_bcc@example.com',
+                      MAIL_FROM: 'us@example.com' do
+  sign_up_as 'john@example.com'
+  confirm_account_for_email 'john@example.com'
+  current_email.should bcc_to('confirmation_bcc@example.com')
+  current_email.should be_from('us@example.com')
+end
+```
+
 To use with RSpec, you could define this in your spec:
 
 ```ruby
