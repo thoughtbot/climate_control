@@ -24,8 +24,10 @@ within a block:
 ```ruby
 ClimateControl.modify CONFIRMATION_INSTRUCTIONS_BCC: 'confirmation_bcc@example.com' do
   sign_up_as 'john@example.com'
+
   confirm_account_for_email 'john@example.com'
-  current_email.should bcc_to('confirmation_bcc@example.com')
+
+  expect(current_email).to bcc_to('confirmation_bcc@example.com')
 end
 ```
 
@@ -35,9 +37,11 @@ To modify multiple environment variables:
 ClimateControl.modify CONFIRMATION_INSTRUCTIONS_BCC: 'confirmation_bcc@example.com',
                       MAIL_FROM: 'us@example.com' do
   sign_up_as 'john@example.com'
+
   confirm_account_for_email 'john@example.com'
-  current_email.should bcc_to('confirmation_bcc@example.com')
-  current_email.should be_from('us@example.com')
+
+  expect(current_email).to bcc_to('confirmation_bcc@example.com')
+  expect(current_email).to be_from('us@example.com')
 end
 ```
 
