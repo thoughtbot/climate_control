@@ -1,5 +1,7 @@
 require "spec_helper"
 
+Thing = Class.new
+
 describe "Climate control" do
   it "allows modification of the environment" do
     block_run = false
@@ -87,22 +89,22 @@ describe "Climate control" do
     # 0.25s passes
     # [other_thread] thread resolves, FOO is removed, BAZ is copied back to ENV
 
-    thread_removing_env = Thread.new do
+    thread_removing_env = Thread.new {
       with_modified_env BAZ: "buzz" do
         sleep 0.5
       end
 
       expect(ENV["BAZ"]).to be_nil
-    end
+    }
 
-    other_thread = Thread.new do
+    other_thread = Thread.new {
       sleep 0.25
       with_modified_env FOO: "bar" do
         sleep 0.5
       end
 
       expect(ENV["FOO"]).to be_nil
-    end
+    }
 
     thread_removing_env.join
     other_thread.join
@@ -112,11 +114,11 @@ describe "Climate control" do
   end
 
   it "is re-entrant" do
-    ret = with_modified_env(FOO: "foo") do
+    ret = with_modified_env(FOO: "foo") {
       with_modified_env(BAR: "bar") do
         "bar"
       end
-    end
+    }
 
     expect(ret).to eq("bar")
 
@@ -125,12 +127,11 @@ describe "Climate control" do
   end
 
   it "raises when the value cannot be assigned properly" do
-    Thing = Class.new
     message = generate_type_error_for_object(Thing.new)
 
-    expect do
+    expect {
       with_modified_env(FOO: Thing.new)
-    end.to raise_error ClimateControl::UnassignableValueError, /attempted to assign .*Thing.* to FOO but failed \(#{message}\)$/
+    }.to raise_error ClimateControl::UnassignableValueError, /attempted to assign .*Thing.* to FOO but failed \(#{message}\)$/
   end
 
   def with_modified_env(options, &block)

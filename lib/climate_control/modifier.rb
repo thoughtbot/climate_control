@@ -8,14 +8,12 @@ module ClimateControl
 
     def process
       @env.synchronize do
-        begin
-          prepare_environment_for_block
-          run_block
-        ensure
-          cache_environment_after_block
-          delete_keys_that_do_not_belong
-          revert_changed_keys
-        end
+        prepare_environment_for_block
+        run_block
+      ensure
+        cache_environment_after_block
+        delete_keys_that_do_not_belong
+        revert_changed_keys
       end
     end
 
@@ -33,12 +31,10 @@ module ClimateControl
 
     def copy_overrides_to_environment
       @environment_overrides.each do |key, value|
-        begin
-          @env[key] = value
-        rescue TypeError => e
-          raise UnassignableValueError,
-            "attempted to assign #{value} to #{key} but failed (#{e.message})"
-        end
+        @env[key] = value
+      rescue TypeError => e
+        raise UnassignableValueError,
+          "attempted to assign #{value} to #{key} but failed (#{e.message})"
       end
     end
 
@@ -55,7 +51,7 @@ module ClimateControl
     end
 
     def delete_keys_that_do_not_belong
-      (keys_to_remove - keys_changed_by_block).each {|key| @env.delete(key) }
+      (keys_to_remove - keys_changed_by_block).each { |key| @env.delete(key) }
     end
 
     def revert_changed_keys

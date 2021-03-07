@@ -1,4 +1,3 @@
-require "thread"
 require "forwardable"
 
 module ClimateControl
@@ -18,12 +17,10 @@ module ClimateControl
       end
 
       @semaphore.synchronize do
-        begin
-          @owner = Thread.current
-          yield if block_given?
-        ensure
-          @owner = nil
-        end
+        @owner = Thread.current
+        yield if block_given?
+      ensure
+        @owner = nil
       end
     end
 

@@ -113,6 +113,8 @@ block, ensuring values are managed properly and consistently.
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
+This project uses [StandardRB](https://github.com/testdouble/standard) to ensure formatting.
+
 ## License
 
 climate_control is copyright 2012-2021 Joshua Clayton and thoughtbot, inc. It is free software and may be redistributed under the terms specified in the [LICENSE](https://github.com/thoughtbot/climate_control/blob/main/LICENSE) file.

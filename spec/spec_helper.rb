@@ -1,5 +1,5 @@
 begin
-  require 'simplecov'
+  require "simplecov"
   SimpleCov.start
 rescue LoadError
   warn "warning: simplecov gem not found; skipping coverage"
