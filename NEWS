@@ -1,3 +1,9 @@
+1.0.0 (March 6, 2021)
+  Commit to supporting latest patch versions of Ruby 2.5+
+  Improve documentation
+  Format code with StandardRB
+  Bump gem dependencies
+
 0.2.0 (May 12, 2017)
   Allow nested environment changes in the same thread
 
