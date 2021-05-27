@@ -1,3 +1,6 @@
+1.0.1 (May 26, 2021)
+  Require minimum Ruby version of 2.5.0
+
 1.0.0 (March 6, 2021)
   Commit to supporting latest patch versions of Ruby 2.5+
   Improve documentation
