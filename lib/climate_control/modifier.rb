@@ -1,13 +1,14 @@
 module ClimateControl
   class Modifier
-    def initialize(env, overrides = {}, &block)
+    def initialize(semaphore, env, overrides = {}, &block)
+      @semaphore = semaphore
+      @env       = env
       @overrides = overrides.transform_keys(&:to_s)
-      @block = block
-      @env = env
+      @block     = block
     end
 
-    def process
-      @env.synchronize do
+    def call
+      @semaphore.synchronize do
         pre = mid = @env.to_hash
         copy @overrides, to: @env
         mid = @env.to_hash

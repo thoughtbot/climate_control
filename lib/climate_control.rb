@@ -1,16 +1,17 @@
-require "climate_control/environment"
 require "climate_control/errors"
 require "climate_control/modifier"
 require "climate_control/version"
+require "monitor"
 
 module ClimateControl
-  @@env = ClimateControl::Environment.new
+  SEMAPHORE = Monitor.new
+  private_constant :SEMAPHORE
 
   def self.modify(environment_overrides, &block)
-    Modifier.new(env, environment_overrides, &block).process
+    Modifier.new(SEMAPHORE, env, environment_overrides, &block).call
   end
 
   def self.env
-    @@env
+    ENV
   end
 end
