@@ -1,27 +1,18 @@
 require "forwardable"
+require "monitor"
 
 module ClimateControl
   class Environment
     extend Forwardable
 
     def initialize
-      @semaphore = Mutex.new
-      @owner = nil
+      @semaphore = Monitor.new
     end
 
-    def_delegators :env, :[]=, :to_hash, :[], :delete
+    def_delegators :env, :[]=, :to_hash, :[], :delete, :keys
 
-    def synchronize
-      if @owner == Thread.current
-        return yield if block_given?
-      end
-
-      @semaphore.synchronize do
-        @owner = Thread.current
-        yield if block_given?
-      ensure
-        @owner = nil
-      end
+    def synchronize(&block)
+      @semaphore.synchronize(&block)
     end
 
     private
