@@ -113,6 +113,39 @@ describe "Climate control" do
     expect(ENV["BAZ"]).to be_nil
   end
 
+  it "handles threads accessing the same key wrapped in a block" do
+    first_thread = Thread.new {
+      with_modified_env do
+        with_modified_env CONFLICTING_KEY: "1" do
+          sleep 0.5
+          expect(ENV["CONFLICTING_KEY"]).to eq("1")
+        end
+
+        expect(ENV["CONFLICTING_KEY"]).to be_nil
+      end
+    }
+
+    second_thread = Thread.new {
+      with_modified_env do
+        sleep 0.25
+        expect(ENV["CONFLICTING_KEY"]).to be_nil
+
+        with_modified_env CONFLICTING_KEY: "2" do
+          expect(ENV["CONFLICTING_KEY"]).to eq("2")
+          sleep 0.5
+          expect(ENV["CONFLICTING_KEY"]).to eq("2")
+        end
+
+        expect(ENV["CONFLICTING_KEY"]).to be_nil
+      end
+    }
+
+    first_thread.join
+    second_thread.join
+
+    expect(ENV["CONFLICTING_KEY"]).to be_nil
+  end
+
   it "is re-entrant" do
     ret = with_modified_env(FOO: "foo") {
       with_modified_env(BAR: "bar") do
@@ -134,7 +167,7 @@ describe "Climate control" do
     }.to raise_error ClimateControl::UnassignableValueError, /attempted to assign .*Thing.* to FOO but failed \(#{message}\)$/
   end
 
-  def with_modified_env(options, &block)
+  def with_modified_env(options = {}, &block)
     ClimateControl.modify(options, &block)
   end
 
