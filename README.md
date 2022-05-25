@@ -48,7 +48,7 @@ end
 To use with RSpec, you could define this in your spec:
 
 ```ruby
-def with_modified_env(options, &block)
+def with_modified_env(options = {}, &block)
   ClimateControl.modify(options, &block)
 end
 ```
