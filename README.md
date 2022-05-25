@@ -105,6 +105,39 @@ manner becomes more difficult:
 Climate Control modifies environment variables only within the context of the
 block, ensuring values are managed properly and consistently.
 
+## Thread-safety
+
+When using threads, for instance when running tests concurrently in the same
+process, you may need to wrap your code inside `ClimateControl.modify` blocks,
+e.g.:
+
+```ruby
+first_thread = Thread.new do
+  ClimateControl.modify(SECRET: "1") do
+    p ENV["SECRET"] # => "1"
+    sleep 2
+    p ENV["SECRET"] # => "1"
+  end
+end
+
+second_thread = Thread.new do
+  ClimateControl.modify({}) do
+    sleep 1
+    p ENV["SECRET"] # => nil
+    sleep 1
+    p ENV["SECRET"] # => nil
+  end
+end
+
+first_thread.join
+second_thread.join
+```
+
+> The modification wraps ENV in a mutex. If there's contention (the env being used - including potentially mutating values), it blocks until the value is freed (we shift out of the Ruby block).
+>
+> <cite><a href="https://github.com/thoughtbot/climate_control/issues/32#issuecomment-800713686">Josh Clayton</a></cite>
+
+
 ## Contributing
 
 1. Fork it
