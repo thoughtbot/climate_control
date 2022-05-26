@@ -5,8 +5,8 @@ require "climate_control/version"
 Gem::Specification.new do |gem|
   gem.name = "climate_control"
   gem.version = ClimateControl::VERSION
-  gem.authors = ["Joshua Clayton"]
-  gem.email = ["joshua.clayton@gmail.com"]
+  gem.authors = ["Joshua Clayton", "Dorian Marié"]
+  gem.email = ["joshua.clayton@gmail.com", "dorian@dorianmarie.fr"]
   gem.description = "Modify your ENV"
   gem.summary = "Modify your ENV easily with ClimateControl"
   gem.homepage = "https://github.com/thoughtbot/climate_control"
