@@ -1,5 +1,7 @@
 # Climate Control
 
+![GitHub Actions CI](https://github.com/thoughtbot/climate_control/actions/workflows/ci.yml/badge.svg)
+
 Easily manage your environment.
 
 ## Installation
