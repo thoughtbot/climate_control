@@ -18,8 +18,8 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version = ">= 2.5.0"
 
-  gem.add_development_dependency "rspec", "~> 3.10.0"
-  gem.add_development_dependency "rake", "~> 12.3.3"
-  gem.add_development_dependency "simplecov", "~> 0.9.1"
-  gem.add_development_dependency "standard", "~> 1.0.0"
+  gem.add_development_dependency "rspec"
+  gem.add_development_dependency "rake"
+  gem.add_development_dependency "simplecov"
+  gem.add_development_dependency "standard"
 end

@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add documentation about thread-safety
 - Allow ClimateControl.modify to be called without environment variables
 - Add test for concurrent access needed to be inside block
+- Relax development dependencies
 
 ## 1.0.1 / 2021-05-26
 
