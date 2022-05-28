@@ -167,6 +167,21 @@ describe "Climate control" do
     }.to raise_error ClimateControl::UnassignableValueError, /attempted to assign .*Thing.* to FOO but failed \(#{message}\)$/
   end
 
+  it "restores the ENV even when an error was raised when assigning values" do
+    ENV["KEY_TO_OVERRIDE"] = "initial_value_1"
+    ENV["KEY_THAT_WILL_ERROR_OUT"] = "initial_value_2"
+
+    expect {
+      with_modified_env(
+        KEY_TO_OVERRIDE: "overwriten_value_1",
+        KEY_THAT_WILL_ERROR_OUT: :value_that_will_error_out
+      ) {}
+    }.to raise_error ClimateControl::UnassignableValueError
+
+    expect(ENV["KEY_TO_OVERRIDE"]).to eq("initial_value_1")
+    expect(ENV["KEY_THAT_WILL_ERROR_OUT"]).to eq("initial_value_2")
+  end
+
   def with_modified_env(options = {}, &block)
     ClimateControl.modify(options, &block)
   end

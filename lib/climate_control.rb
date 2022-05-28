@@ -13,9 +13,13 @@ module ClimateControl
 
     SEMAPHORE.synchronize do
       previous = ENV.to_hash
-      middle = {}
-      copy environment_overrides
-      middle = ENV.to_hash
+
+      begin
+        copy environment_overrides
+      ensure
+        middle = ENV.to_hash
+      end
+
       block.call
     ensure
       after = ENV
