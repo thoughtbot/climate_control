@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 1.1.1 / 2022-05-28
+
+- Fixed: ENV was not restored if an error was thrown when assigning ENV
+
 ## 1.1.0 / 2022-05-26
 
 - Refactor to use `Monitor` instead of `Mutex`
