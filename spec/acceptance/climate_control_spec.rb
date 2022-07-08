@@ -185,10 +185,10 @@ describe "Climate control" do
   it "doesn't block on nested modify calls" do
     with_modified_env(SMS_DEFAULT_COUNTRY_CODE: nil) do
       with_modified_env(SMS_DEFAULT_COUNTRY_CODE: "++56") do
-        expect(ENV["SMS_DEFAULT_COUNTRY_CODE"]).to eq("++56")
+        expect(ENV.fetch("SMS_DEFAULT_COUNTRY_CODE", "++41")).to eq("++56")
       end
 
-      expect(ENV["SMS_DEFAULT_COUNTRY_CODE"]).to eq(nil)
+      expect(ENV.fetch("SMS_DEFAULT_COUNTRY_CODE", "++41")).to eq("++41")
     end
   end
 
