@@ -182,6 +182,16 @@ describe "Climate control" do
     expect(ENV["KEY_THAT_WILL_ERROR_OUT"]).to eq("initial_value_2")
   end
 
+  it "doesn't block on nested modify calls" do
+    with_modified_env(SMS_DEFAULT_COUNTRY_CODE: nil) do
+      with_modified_env(SMS_DEFAULT_COUNTRY_CODE: "++56") do
+        expect(ENV.fetch("SMS_DEFAULT_COUNTRY_CODE", "++41")).to eq("++56")
+      end
+
+      expect(ENV.fetch("SMS_DEFAULT_COUNTRY_CODE", "++41")).to eq("++41")
+    end
+  end
+
   def with_modified_env(options = {}, &block)
     ClimateControl.modify(options, &block)
   end
