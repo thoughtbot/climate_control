@@ -1,8 +1,6 @@
 require "spec_helper"
 
-Thing = Class.new
-
-describe "Climate control" do
+describe "ClimateControl#unsafe_modify" do
   it "allows modification of the environment" do
     block_run = false
     with_modified_env FOO: "bar" do
@@ -113,39 +111,6 @@ describe "Climate control" do
     expect(ENV["BAZ"]).to be_nil
   end
 
-  it "handles threads accessing the same key wrapped in a block" do
-    first_thread = Thread.new {
-      with_modified_env do
-        with_modified_env CONFLICTING_KEY: "1" do
-          sleep 0.5
-          expect(ENV["CONFLICTING_KEY"]).to eq("1")
-        end
-
-        expect(ENV["CONFLICTING_KEY"]).to be_nil
-      end
-    }
-
-    second_thread = Thread.new {
-      with_modified_env do
-        sleep 0.25
-        expect(ENV["CONFLICTING_KEY"]).to be_nil
-
-        with_modified_env CONFLICTING_KEY: "2" do
-          expect(ENV["CONFLICTING_KEY"]).to eq("2")
-          sleep 0.5
-          expect(ENV["CONFLICTING_KEY"]).to eq("2")
-        end
-
-        expect(ENV["CONFLICTING_KEY"]).to be_nil
-      end
-    }
-
-    first_thread.join
-    second_thread.join
-
-    expect(ENV["CONFLICTING_KEY"]).to be_nil
-  end
-
   it "is re-entrant" do
     ret = with_modified_env(FOO: "foo") {
       with_modified_env(BAR: "bar") do
@@ -193,7 +158,7 @@ describe "Climate control" do
   end
 
   def with_modified_env(options = {}, &block)
-    ClimateControl.modify(options, &block)
+    ClimateControl.unsafe_modify(options, &block)
   end
 
   def generate_type_error_for_object(object)
