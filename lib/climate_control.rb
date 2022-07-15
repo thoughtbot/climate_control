@@ -4,6 +4,7 @@ require "monitor"
 
 module ClimateControl
   extend self
+  extend Gem::Deprecate
 
   SEMAPHORE = Monitor.new
   private_constant :SEMAPHORE
@@ -55,6 +56,8 @@ module ClimateControl
   def env
     ENV
   end
+
+  deprecate :env, "ENV", 2022, 10
 
   private
 
