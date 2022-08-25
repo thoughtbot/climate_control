@@ -173,7 +173,7 @@ describe "Climate control" do
 
     expect {
       with_modified_env(
-        KEY_TO_OVERRIDE: "overwriten_value_1",
+        KEY_TO_OVERRIDE: "overwritten_value_1",
         KEY_THAT_WILL_ERROR_OUT: :value_that_will_error_out
       ) {}
     }.to raise_error ClimateControl::UnassignableValueError
