@@ -16,7 +16,7 @@ Gem::Specification.new do |gem|
   gem.test_files = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.required_ruby_version = ">= 2.5.0"
+  gem.required_ruby_version = ">= 2.7.0"
 
   gem.add_development_dependency "rspec"
   gem.add_development_dependency "rake"
