@@ -11,7 +11,7 @@ Gem::Specification.new do |gem|
   gem.summary = "Modify your ENV easily with ClimateControl"
   gem.homepage = "https://github.com/thoughtbot/climate_control"
   gem.license = "MIT"
-  gem.metadata["changelog_uri"] = "#{spec.homepage}/blob/main/CHANGELOG.md"
+  gem.metadata["changelog_uri"] = "#{gem.homepage}/blob/main/CHANGELOG.md"
 
   gem.files = `git ls-files`.split($/)
   gem.require_paths = ["lib"]
