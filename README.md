@@ -152,19 +152,8 @@ This project uses [StandardRB](https://github.com/testdouble/standard) to ensure
 
 ## License
 
-climate_control is copyright 2012-2021 Joshua Clayton and thoughtbot, inc. It is free software and may be redistributed under the terms specified in the [LICENSE](https://github.com/thoughtbot/climate_control/blob/main/LICENSE) file.
+climate_control is copyright © 2012 Joshua Clayton and thoughtbot, inc. It is free software and may be redistributed under the terms specified in the [LICENSE](https://github.com/thoughtbot/climate_control/blob/main/LICENSE) file.
 
-About thoughtbot
-----------------
 
-![thoughtbot](https://thoughtbot.com/brand_assets/93:44.svg)
-
-climate_control is maintained and funded by thoughtbot, inc.
-The names and logos for thoughtbot are trademarks of thoughtbot, inc.
-
-We love open source software!
-See [our other projects][community] or
-[hire us][hire] to design, develop, and grow your product.
-
-[community]: https://thoughtbot.com/community?utm_source=github
-[hire]: https://thoughtbot.com/hire-us?utm_source=github
+<!-- START /templates/footer.md -->
+<!-- END /templates/footer.md -->
