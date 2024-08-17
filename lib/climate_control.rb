@@ -53,12 +53,6 @@ module ClimateControl
     end
   end
 
-  def env
-    ENV
-  end
-
-  deprecate :env, "ENV", 2022, 10
-
   private
 
   def copy(overrides)
