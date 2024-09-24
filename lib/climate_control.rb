@@ -10,8 +10,6 @@ module ClimateControl
   private_constant :SEMAPHORE
 
   def modify(environment_overrides = {}, &block)
-    environment_overrides = environment_overrides.transform_keys(&:to_s)
-
     SEMAPHORE.synchronize do
       previous = ENV.to_hash
 
@@ -24,17 +22,11 @@ module ClimateControl
       block.call
     ensure
       after = ENV
-      (previous.keys | middle.keys | after.keys).each do |key|
-        if previous[key] != after[key] && middle[key] == after[key]
-          ENV[key] = previous[key]
-        end
-      end
+      merge(ENV, previous: previous, middle: middle, after: after)
     end
   end
 
   def unsafe_modify(environment_overrides = {}, &block)
-    environment_overrides = environment_overrides.transform_keys(&:to_s)
-
     previous = ENV.to_hash
 
     begin
@@ -46,21 +38,25 @@ module ClimateControl
     block.call
   ensure
     after = ENV
-    (previous.keys | middle.keys | after.keys).each do |key|
-      if previous[key] != after[key] && middle[key] == after[key]
-        ENV[key] = previous[key]
-      end
-    end
+    merge(ENV, previous: previous, middle: middle, after: after)
   end
 
   private
 
   def copy(overrides)
-    overrides.each do |key, value|
+    overrides.transform_keys(&:to_s).each do |key, value|
       ENV[key] = value
     rescue TypeError => e
       raise UnassignableValueError,
         "attempted to assign #{value} to #{key} but failed (#{e.message})"
+    end
+  end
+
+  def merge(env, previous:, middle:, after:)
+    (previous.keys | middle.keys | after.keys).each do |key|
+      if previous[key] != after[key] && middle[key] == after[key]
+        env[key] = previous[key]
+      end
     end
   end
 end
