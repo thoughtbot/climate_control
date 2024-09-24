@@ -41,6 +41,8 @@ module ClimateControl
     merge(ENV, previous: previous, middle: middle, after: after)
   end
 
+  deprecate :unsafe_modify, :modify, 2024, 11
+
   def env
     ENV
   end
