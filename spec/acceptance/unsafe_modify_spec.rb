@@ -157,6 +157,18 @@ describe "ClimateControl#unsafe_modify" do
     end
   end
 
+  it "temporarily unsets environment variables when passing nil as value" do
+    ENV["TEMP_VAR"] = "some_value"
+    expect(ENV["TEMP_VAR"]).to eq("some_value")
+
+    with_modified_env(TEMP_VAR: nil) do
+      expect(ENV["TEMP_VAR"]).to be_nil
+      expect(ENV.key?("TEMP_VAR")).to be false
+    end
+
+    expect(ENV["TEMP_VAR"]).to eq("some_value")
+  end
+
   def with_modified_env(options = {}, &block)
     ClimateControl.unsafe_modify(options, &block)
   end
