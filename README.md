@@ -47,6 +47,16 @@ ClimateControl.modify CONFIRMATION_INSTRUCTIONS_BCC: 'confirmation_bcc@example.c
 end
 ```
 
+To temporarily unset an environment variable, pass `nil` as the value:
+
+```ruby
+ClimateControl.modify API_KEY: nil do
+  # ENV["API_KEY"] will be nil within this block
+  # It will be restored to its original value (or remain unset if it was never set)
+  # after the block ends
+end
+```
+
 To use with RSpec, you could define this in your spec:
 
 ```ruby
