@@ -12,6 +12,7 @@ Gem::Specification.new do |gem|
   gem.homepage = "https://github.com/thoughtbot/climate_control"
   gem.license = "MIT"
   gem.metadata["changelog_uri"] = "#{gem.homepage}/blob/main/CHANGELOG.md"
+  gem.metadata["rubygems_mfa_required"] = "true"
 
   gem.files = `git ls-files`.split($/)
   gem.require_paths = ["lib"]
