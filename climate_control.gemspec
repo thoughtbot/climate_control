@@ -14,7 +14,7 @@ Gem::Specification.new do |gem|
   gem.metadata["changelog_uri"] = "#{gem.homepage}/blob/main/CHANGELOG.md"
   gem.metadata["rubygems_mfa_required"] = "true"
 
-  gem.files = `git ls-files`.split($/)
+  gem.files = `git ls-files lib`.split($/) + ["LICENSE", "CHANGELOG.md", "README.md"]
   gem.require_paths = ["lib"]
 
   gem.required_ruby_version = ">= 2.7.0"
